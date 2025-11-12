@@ -51,6 +51,7 @@
 */
 
 #include <stdint.h>
+#include <stdio.h>
 
 typedef int32_t TPE_Unit;               ///< Basic fixed point unit type.
 typedef int16_t TPE_UnitReduced;        ///< Like TPE_Unit but saving space

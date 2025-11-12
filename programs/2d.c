@@ -14,8 +14,12 @@ TPE_Vec3 environmentDistance(TPE_Vec3 p, TPE_Unit maxD)
 
 int inactiveCount = 0;
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
+  (void)argc;
+  (void)argv;
+  
   helper_init();
 
   tpe_world.environmentFunction = environmentDistance;

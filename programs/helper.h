@@ -5,7 +5,7 @@
 
 #define TPE_LOG puts
 
-#include "../tinyphysicsengine.h"
+#include "tinyphysicsengine.h"
 #include <SDL2/SDL.h>
 #include <math.h>
 #include <stdio.h>
@@ -879,8 +879,10 @@ void helper_frameEnd(void)
 
   helper_frameMsLeft = helper_frameStartTime + MSPF - SDL_GetTicks();
 
-  if (helper_frameMsLeft > 0)
-    usleep(helper_frameMsLeft * 1000); // ofc this isn't accurate
+  if (helper_frameMsLeft > 0){
+    // usleep(helper_frameMsLeft * 1000); // ofc this isn't accurate
+    SDL_Delay((Uint32)helper_frameMsLeft);
+  }
 }
 
 void helper_end(void)

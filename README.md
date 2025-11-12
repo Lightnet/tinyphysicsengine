@@ -5,7 +5,7 @@
 - https://gitlab.com/drummyfish/tinyphysicsengine 
 
 
-![](tpe1.gif)![](tpe2.gif)![](tpe3.gif)![](tpe4.gif)![](tpe5.gif)![](tpe6.gif)![](tpe7.gif)
+![](assets/tpe1.gif)![](assets/tpe2.gif)![](assets/tpe3.gif)![](assets/tpe4.gif)![](assets/tpe5.gif)![](assets/tpe6.gif)![](assets/tpe7.gif)
 
 This is tinyphysicsengine (TPE), a small, completely public domain KISS/suckless, fixed point physically inaccurate pure C header only 3D physics engine (or rather a library) mostly for entertainment purposes that's supposed to run even on tiny computers such as embedded, even **bare metal**. It's written in the same style/philosophy as [small3dlib](https://codeberg.org/drummyfish/small3dlib), [raycastlib](https://codeberg.org/drummyfish/raycastlib) etc.
 
@@ -15,7 +15,7 @@ TPE is NOT a "robust framework" and it is **NOT physically accurate**; basic thi
 
 **Why does this exist?** Because all other engines suck, they are either trivial or bloated, have licensing conditions, dependencies, require floating point unit, complex build systems, bad languages, PhD level math etcetc. TPE is a keep it simple engine for people who just want to add simple physics to their tiny game without being bothered by bullshit.
 
-## features
+## Features:
 
 - KISS, **suckless**, pure C99, header only
 - **compatible with small3dlib**, easy integration (same data types, conventions, ...)
@@ -61,7 +61,7 @@ You can probably use this to:
 - impress girls by showing them 3D physics running on embedded devices
 - etc.
 
-## limitations
+## Limitations:
 
 - generally **NOT physically correct**, for God's sake do not use this for computation of your space rocket's trajectory!
 - even though **performance** is good for simple simulations, it is not best possible and **won't scale** very much because the soft body model requires to make more computations and also takes more RAM (however the code is still a reasonably optimized C that should run alright)
@@ -82,13 +82,13 @@ You can probably use this to:
 - the library **doesn't try to be too smart**, it is up to you to decide if you e.g. need smoothing of movement and apply it yourself (however helper functions for this are provided)
 - just simple discrete collision detection and resolution
 
-## how to
+## How to:
 
 For a basic use see the `hello.c` example program and `hello2.c` as the next, then take a look at the more complex ones. Also see the library file itself, it is highly commented and is supposed to serve as its own documentation.
 
 Very basic sum up: TODO, coming soon :)
 
-## usage rights
+## Usage rights:
 
 tl;dr: CC0 public domain, I hate intellectual property, do whatever you want
 
