@@ -377,8 +377,8 @@ TPE_worldInit(&world,bodies,2,environmentDistance);
 world.bodies[0].friction = FR;
 world.bodies[1].friction = FR;
 
-TPE_bodyMove(world.bodies,TPE_vec3(500,-200,400));
-TPE_bodyMove(&world.bodies[1],TPE_vec3(-500,800,400));
+TPE_bodyMoveTo(world.bodies,TPE_vec3(500,-200,400));
+TPE_bodyMoveTo(&world.bodies[1],TPE_vec3(-500,800,400));
 
 
 TPE_bodyStop(world.bodies);
@@ -462,7 +462,7 @@ righ = TPE_vec3Plus(righ,
   bodies[0].joints[5].position)
   );
 */
-TPE_Vec3 rrrr = TPE_orientationFromVecs(forw,righ);
+TPE_Vec3 rrrr = TPE_rotationFromVecs(forw,righ);
 
 cube.transform.rotation.x = rrrr.x;
 cube.transform.rotation.y = rrrr.y;
@@ -472,7 +472,7 @@ cube.transform.scale.x = 600;
 cube.transform.scale.y = cube.transform.scale.x;
 cube.transform.scale.z = cube.transform.scale.x;
 
-TPE_Vec3 ppp = TPE_bodyGetCenter(&bodies[0]);
+TPE_Vec3 ppp = TPE_bodyGetCenterOfMass(&bodies[0]);
 
 cube.transform.translation.x = ppp.x;
 cube.transform.translation.y = ppp.y;
@@ -498,8 +498,19 @@ S3L_newFrame();
 //S3L_drawScene(sphereScene);
 sphereScene.models = &sphereModel;
 
-TPE_worldDebugDraw(&world,debugDrawPixel,
-camPos,camRot,TPE_vec3(S3L_RESOLUTION_X,S3L_RESOLUTION_Y,sphereScene.camera.focalLength));
+// TPE_worldDebugDraw(&world,debugDrawPixel,
+// camPos,camRot,TPE_vec3(S3L_RESOLUTION_X,S3L_RESOLUTION_Y,sphereScene.camera.focalLength));
+
+TPE_worldDebugDraw(
+  &world,
+  debugDrawPixel,
+  camPos,
+  camRot,
+  TPE_vec3(S3L_RESOLUTION_X, S3L_RESOLUTION_Y, sphereScene.camera.focalLength),
+  16,        // envGridRes  (e.g. 16x16x16 grid)
+  1000       // envGridSize (e.g. each cell is 1000 units)
+);
+
 
 
 /*
@@ -540,7 +551,8 @@ draw3DLine(0,0,0,righ.x,righ.y,righ.z);
 
 if (state[SDL_SCANCODE_M])
 {
-  TPE_bodyWake(world.bodies);
+  // TPE_bodyWake(world.bodies);
+  TPE_worldActivateAll(&world);
 
   TPE_bodySpin(bodies,TPE_vec3(50,40,100));
 

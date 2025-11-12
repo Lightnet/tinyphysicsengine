@@ -81,19 +81,19 @@ endif(${EXPORT_RAYLIB_APP})
 if(EXAMPLE_TESTS)
     set(EXAMPLES_FILES
         programs/2d.c
-        # programs/car.c
-        # programs/cubes.c
-        # programs/envaccel.c
-        # programs/heightmap.c
-        # programs/hello.c
-        # programs/hello2.c
-        # programs/main.c #fail
-        # programs/player.c
-        # programs/shoot.c
-        # programs/stack.c
-        # programs/test.c
-        # programs/testGeneral.c
-        # programs/water.c
+        programs/car.c
+        programs/cubes.c
+        programs/envaccel.c
+        programs/heightmap.c
+        programs/hello.c
+        programs/hello2.c
+        programs/main.c
+        programs/player.c
+        programs/shoot.c
+        programs/stack.c
+        programs/test.c
+        programs/testGeneral.c
+        programs/water.c
     )
     set(EXPORT_SDL2_APP ON)
     # set(EXPORT_SDL2_APP OFF)
