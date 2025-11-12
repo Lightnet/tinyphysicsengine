@@ -27,7 +27,8 @@ void updateOrientPos(int i)
   cubePositions[i] = TPE_bodyGetCenterOfMass(&tpe_world.bodies[i]);
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
 

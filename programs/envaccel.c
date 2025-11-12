@@ -48,7 +48,8 @@ TPE_Vec3 environmentDistance(TPE_Vec3 p, TPE_Unit maxD)
   TPE_ENV_END
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
 

@@ -1,7 +1,7 @@
 /** Simple demo showing 2 bodies thrown inside a room, the world is rendered
   as a simple ASCII side view. */
 
-#include "../tinyphysicsengine.h"
+#include "tinyphysicsengine.h"
 #include <stdio.h>
 
 #define ROOM_SIZE (20 * TPE_F)
@@ -51,7 +51,8 @@ void printScreen(void)
   }
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   TPE_Body bodies[2];             // we'll have two bodies
   TPE_World world;

@@ -290,7 +290,8 @@ const S3L_Index sphereTriangleIndices[SPHERE_TRIANGLE_COUNT * 3] = {
      13,     1,    14         // 237
 }; // sphereTriangleIndices
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   SDL_Window *window = SDL_CreateWindow("test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, S3L_RESOLUTION_X, S3L_RESOLUTION_Y, SDL_WINDOW_SHOWN); 
   SDL_Renderer *renderer = SDL_CreateRenderer(window,-1,0);
@@ -576,8 +577,10 @@ else if (state[SDL_SCANCODE_H])
 
     time = time + MSPF - SDL_GetTicks();
 
-    if (time > 1)
-      usleep(time * 1000);
+    if (time > 1){
+      // usleep(time * 1000);
+      SDL_Delay(1000);
+    }
 
     frame++;
   }

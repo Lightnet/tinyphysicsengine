@@ -24,7 +24,8 @@ TPE_Vec3 environmentDistance(TPE_Vec3 p, TPE_Unit maxD)
   return TPE_envHeightmap(p,TPE_vec3(0,0,0),HEIGHTMAP_3D_STEP,height,maxD);
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
 

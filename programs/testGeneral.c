@@ -25,7 +25,8 @@ uint8_t simulating = 0;
 
 TPE_Body *controlledBody;
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
 

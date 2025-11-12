@@ -42,7 +42,8 @@ uint8_t collisionCallback(uint16_t b1, uint16_t j1, uint16_t b2, uint16_t j2,
   return 1;
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   arenaModelInit();
   carModelInit();

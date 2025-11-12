@@ -1,7 +1,7 @@
 /** General automatic test for tinyphysicsengine, this should always be run
   and passed before publishing a new version of TPE. */
 
-#include "../tinyphysicsengine.h"
+#include "tinyphysicsengine.h"
 #include <stdio.h>
 
 #define ass(cond,text) { printf("[CHECKING] " text ": "); if (!(cond)) { puts("ERROR"); return 1; } else puts("OK"); }
@@ -73,7 +73,8 @@ TPE_Vec3 envFuncHeightmap(TPE_Vec3 p, TPE_Unit maxD)
   return TPE_envHeightmap(p,TPE_vec3(10,20,30),500,heightMap,maxD);
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   puts("== testing tinyphysicsengine ==");
 

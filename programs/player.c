@@ -38,7 +38,8 @@ void updateDirection(void) // updates player direction vector
   playerDirectionVec.y = 0;
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
   levelModelInit();

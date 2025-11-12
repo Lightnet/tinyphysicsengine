@@ -2,7 +2,7 @@
 a single joint and dropping it on the floor, then plotting the body vertical
 position over time. */
 
-#include "../tinyphysicsengine.h"
+#include "tinyphysicsengine.h"
 #include <stdio.h>
 
 TPE_Vec3 environmentDistance(TPE_Vec3 point, TPE_Unit maxDistance)
@@ -10,7 +10,8 @@ TPE_Vec3 environmentDistance(TPE_Vec3 point, TPE_Unit maxDistance)
   return TPE_envGround(point,0); // just an infinite flat plane
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   TPE_Body body;
   TPE_World world;

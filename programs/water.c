@@ -21,7 +21,8 @@ TPE_Joint joints[WATER_JOINTS + 1];
 TPE_Connection connections[WATER_CONNECTIONS];
 TPE_Body bodies[2];
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
 

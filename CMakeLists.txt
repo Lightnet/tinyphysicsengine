@@ -33,13 +33,18 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raygui)
 
-FetchContent_Declare(
-    SDL2
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG release-2.32.10
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL2)
+set(EXAMPLE_TESTS ON)
+# set(EXAMPLE_TESTS OFF)
+
+if(EXAMPLE_TESTS)
+    FetchContent_Declare(
+        SDL2
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-2.32.10
+        GIT_PROGRESS TRUE
+    )
+    FetchContent_MakeAvailable(SDL2)
+endif(EXAMPLE_TESTS)
 
 
 # set(EXPORT_RAYLIB_APP ON)
@@ -73,37 +78,87 @@ if(${EXPORT_RAYLIB_APP})
 endif(${EXPORT_RAYLIB_APP})
 
 
-
-
-set(EXPORT_SDL2_APP ON)
-# set(EXPORT_SDL2_APP OFF)
-if(${EXPORT_SDL2_APP})
-    set(APP_SDL2_NAME sdl2_demo)
-    set(SRC_FILES
-        #helper for header and c
-        programs/helper.h
-    )
-    add_executable(${APP_SDL2_NAME}
-        ${SRC_FILES}
-        # examples/sdl2_demo.c 
+if(EXAMPLE_TESTS)
+    set(EXAMPLES_FILES
         programs/2d.c
+        # programs/car.c
+        # programs/cubes.c
+        # programs/envaccel.c
+        # programs/heightmap.c
+        # programs/hello.c
+        # programs/hello2.c
+        # programs/main.c #fail
+        # programs/player.c
+        # programs/shoot.c
+        # programs/stack.c
+        # programs/test.c
+        # programs/testGeneral.c
+        # programs/water.c
     )
-    target_link_libraries(${APP_SDL2_NAME} PRIVATE 
-        SDL2::SDL2main 
-        SDL2::SDL2
-    )
-    target_include_directories(${APP_SDL2_NAME} PUBLIC
-        ${SDL2_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        # ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-    if(WIN32)
-        # ws2_32 # network
-        target_link_libraries(${APP_SDL2_NAME} PRIVATE ws2_32 gdi32 user32 shell32)
-        target_link_options(${APP_SDL2_NAME} PRIVATE
-            -static-libgcc
-            -static-libstdc++  # Uncomment if C++ code is used
-            -static           # Avoid full static linking to prevent issues with system libraries
-        )
-    endif()
-endif(${EXPORT_SDL2_APP})
+    set(EXPORT_SDL2_APP ON)
+    # set(EXPORT_SDL2_APP OFF)
+    set(APP_SDL2_NAME_BASE "sdl2_") # prefix for the binary names
+
+    if(EXPORT_SDL2_APP)
+        
+        foreach(EXAMPLE_SRC ${EXAMPLES_FILES})
+            # ---- derive a nice target name from the file name ----
+            get_filename_component(EXAMPLE_NAME ${EXAMPLE_SRC} NAME_WE)   # strip .c
+            set(TARGET_NAME "${APP_SDL2_NAME_BASE}${EXAMPLE_NAME}")
+
+            # ---- create the executable ----
+            add_executable(${TARGET_NAME}
+                ${EXAMPLE_SRC}
+                programs/helper.h          # shared helper header (optional)
+            )
+
+            # ---- link SDL2 (adjust if you use find_package(SDL2) instead) ----
+            target_link_libraries(${TARGET_NAME} PRIVATE
+                SDL2::SDL2main
+                SDL2::SDL2
+            )
+
+            # ---- include directories (common for all examples) ----
+            target_include_directories(${TARGET_NAME} PUBLIC
+                ${SDL2_SOURCE_DIR}/include
+                ${CMAKE_CURRENT_SOURCE_DIR}/include
+            )
+
+            # ---- Windows-specific static linking (optional) ----
+            if(WIN32)
+                target_link_libraries(${TARGET_NAME} PRIVATE ws2_32 gdi32 user32 shell32)
+                target_link_options(${TARGET_NAME} PRIVATE
+                    -static-libgcc
+                    -static-libstdc++   # only if you have C++ sources
+                    -static             # careful: not fully static, avoids system-lib issues
+                )
+            endif()
+        endforeach()
+    endif(EXPORT_SDL2_APP)
+
+
+endif(EXAMPLE_TESTS)
+
+
+# if(EXAMPLE_TESTS)
+#     set(APP_SDL2_1 demo_car)
+#     add_executable(${APP_SDL2_1}
+#         ESPboy_car/ESPboy_car.c
+#     )
+#     target_link_libraries(${APP_SDL2_1} PRIVATE 
+#         raylib
+#     )
+#     target_include_directories(${APP_SDL2_1} PUBLIC
+#         ${CMAKE_CURRENT_SOURCE_DIR}/ESPboy_car
+#         # ${CMAKE_CURRENT_SOURCE_DIR}
+#     )
+#     if(WIN32)
+#         # ws2_32 # network
+#         target_link_libraries(${APP_SDL2_1} PRIVATE ws2_32 gdi32 user32 shell32)
+#         target_link_options(${APP_SDL2_1} PRIVATE
+#             -static-libgcc
+#             -static-libstdc++  # Uncomment if C++ code is used
+#             -static           # Avoid full static linking to prevent issues with system libraries
+#         )
+#     endif()
+# endif(EXAMPLE_TESTS)

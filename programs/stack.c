@@ -25,7 +25,8 @@ TPE_Unit updateOrientation(TPE_Unit new, TPE_Unit old)
   return TPE_abs(new - old) < 20 ? (new + old) / 2 : new;
 }
 
-int main(void)
+#define main SDL_main
+int main(int argc, char *argv[])
 {
   helper_init();
 
