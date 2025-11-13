@@ -16,7 +16,6 @@
 
 // Forward declarations
 void UpdatePhysics(TPE_World* world);
-void DrawScene(Camera3D* camera, TPE_Body* cubeBody, Vector3 cubeSize);
 
 TPE_Vec3 environmentDistance(TPE_Vec3 point, TPE_Unit maxDistance){
   return TPE_envGround(point,0); // just an infinite flat plane
