@@ -164,3 +164,32 @@ endif(EXAMPLE_TESTS)
 #         )
 #     endif()
 # endif(EXAMPLE_TESTS)
+
+#------------------------------------------------
+# dev test
+#------------------------------------------------
+
+# if(EXAMPLE_TESTS)
+    set(APP_RAYLIB_E demo_tpe)
+    add_executable(${APP_RAYLIB_E}
+        # examples/raylib/raylib_window_define.c
+        examples/sample_tpe_dev.c
+    )
+    target_link_libraries(${APP_RAYLIB_E} PRIVATE 
+        raylib
+    )
+    target_include_directories(${APP_RAYLIB_E} PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include_dev
+        # ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    if(WIN32)
+        # ws2_32 # network
+        target_link_libraries(${APP_RAYLIB_E} PRIVATE ws2_32 gdi32 user32 shell32)
+        target_link_options(${APP_RAYLIB_E} PRIVATE
+            -static-libgcc
+            -static-libstdc++  # Uncomment if C++ code is used
+            -static           # Avoid full static linking to prevent issues with system libraries
+        )
+    endif()
+# endif(EXAMPLE_TESTS)
+
