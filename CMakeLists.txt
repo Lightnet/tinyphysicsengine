@@ -9,6 +9,9 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
+# set(EXAMPLE_TESTS ON)
+set(EXAMPLE_TESTS OFF)
+
 include(FetchContent)
 #================================================
 # Fetch raylib
@@ -33,8 +36,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raygui)
 
-set(EXAMPLE_TESTS ON)
-# set(EXAMPLE_TESTS OFF)
+
 
 if(EXAMPLE_TESTS)
     FetchContent_Declare(
@@ -47,8 +49,8 @@ if(EXAMPLE_TESTS)
 endif(EXAMPLE_TESTS)
 
 
-# set(EXPORT_RAYLIB_APP ON)
-set(EXPORT_RAYLIB_APP OFF)
+set(EXPORT_RAYLIB_APP ON)
+# set(EXPORT_RAYLIB_APP OFF)
 if(${EXPORT_RAYLIB_APP})
     set(APP_NAME demo)
     set(SRC_FILES

@@ -64,9 +64,9 @@ int main(void) {
         UpdateCamera(&camera, CAMERA_CUSTOM);  // Manual control
 
         // Step physics (multiple calls to TPE_worldStep for substeps)
-        for (int i = 0; i < PHYSICS_STEPS_PER_FRAME; ++i) {
+        // for (int i = 0; i < PHYSICS_STEPS_PER_FRAME; ++i) {
             UpdatePhysics(&world);
-        }
+        // }
 
         if(TPE_bodyIsActive(&body)){
             if (frame % 6 == 0) // print once in 6 frames
@@ -83,13 +83,19 @@ int main(void) {
 
             for (int i = 0; i < (height * 4) / TPE_F; ++i)
                 putchar(' ');
-
                 puts("*");
             }
 
             TPE_bodyApplyGravity(&body,TPE_F / 100);
             // TPE_worldStep(&world);
             frame++;
+        }
+
+        if(IsKeyPressed(KEY_R)){
+            printf("reset \n");
+            TPE_bodyActivate(&body);
+            TPE_bodyMoveTo(&body, TPE_vec3(0,20000,0));
+            // TPE_bodyMoveBy(&body, TPE_vec3(0,2000,0));
 
         }
 
@@ -102,6 +108,12 @@ int main(void) {
                 // DrawScene(&camera, cubeBody, (Vector3){1.0f, 1.0f, 1.0f});  // Full size = 2 * halfExtents
             EndMode3D();
             DrawFPS(10, 10);
+
+            DrawText("Reset Cube = R Key", 10, 40, 20, DARKGRAY);
+            const char *cubePosText = 0;
+            cubePosText = TextFormat("pos x:%0.0f y:%0.0f z:%0.0f", cubePos.x , cubePos.y, cubePos.z);
+            DrawText(cubePosText, 10, 60, 20, DARKGRAY);
+
         EndDrawing();
     }
 
@@ -124,19 +136,4 @@ void UpdatePhysics(TPE_World* world) {
 
     // Step the world (fixed timestep, handles collision/response)
     TPE_worldStep(world);
-}
-
-// Draw the 3D scene
-void DrawScene(Camera3D* camera, TPE_Body* cubeBody, Vector3 cubeSize) {
-    // Draw ground plane (large quad for viz; actual collision is infinite plane)
-    DrawPlane((Vector3){0.0f, -1.0f, 0.0f}, (Vector2){20.0f, 20.0f}, GREEN);
-
-    // Draw cube (position only; add rotation later)
-    // Vector3 cubePos = {cubeBody->position.x, cubeBody->position.y, cubeBody->position.z};
-    // Vector3 cubePos = {cubeBody->position.x, cubeBody->position.y, cubeBody->position.z};
-    // DrawCube(cubePos, cubeSize.x, cubeSize.y, cubeSize.z, RED);
-    // DrawCubeWires(cubePos, cubeSize.x, cubeSize.y, cubeSize.z, BLACK);
-
-    // Draw grid for reference
-    DrawGrid(10, 1.0f);
 }
