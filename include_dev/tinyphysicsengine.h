@@ -1520,7 +1520,7 @@ void TPE_bodyApplyGravity(TPE_Body *body, TPE_Unit downwardsAccel)
     return;
 
   for (uint16_t i = 0; i < body->jointCount; ++i){
-    printf("y: %f\n", downwardsAccel);
+    // printf("y: %f\n", downwardsAccel);
     body->joints[i].velocity[1] -= downwardsAccel;
   }
 }
