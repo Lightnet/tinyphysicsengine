@@ -9,7 +9,6 @@
 // Forward declarations
 void UpdatePhysics(TPE_World* world);
 
-
 TPE_Vec3 environmentDistance(TPE_Vec3 point, TPE_Unit maxDistance){
   return TPE_envGround(point,0); // just an infinite flat plane
 }
@@ -24,7 +23,7 @@ int main(int argc, char* args[])
 
     // Setup 3D camera (orbiting)
     Camera3D camera = { 0 };
-    camera.position = (Vector3){ 10.0f, 10.0f, 10.0f };
+    camera.position = (Vector3){ 50.0f, 50.0f, 50.0f };
     camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
     camera.fovy = 45.0f;
@@ -57,7 +56,6 @@ int main(int argc, char* args[])
         }
         UpdateCamera(&camera, CAMERA_CUSTOM);  // Manual control
 
-
         UpdatePhysics(&world);
 
         if(TPE_bodyIsActive(&body)){
@@ -75,7 +73,8 @@ int main(int argc, char* args[])
                 puts("*");
             }
 #if TPE_USE_FLOAT // float
-            TPE_bodyApplyGravity(&body, 9.0f);
+            // TPE_bodyApplyGravity(&body, 1.1f);
+            TPE_bodyApplyGravity(&body, 0.1f);
 #else
             TPE_bodyApplyGravity(&body,TPE_F / 100);
 #endif            
@@ -87,7 +86,7 @@ int main(int argc, char* args[])
             printf("reset \n");
             TPE_bodyActivate(&body);
 #if TPE_USE_FLOAT // float
-            TPE_bodyMoveTo(&body, TPE_vec3(0,1000.0f,0));
+            TPE_bodyMoveTo(&body, TPE_vec3(0,100.0f,0));
 #else
             TPE_bodyMoveTo(&body, TPE_vec3(0,20000,0));
 #endif
@@ -107,7 +106,7 @@ int main(int argc, char* args[])
 
             DrawText("Reset Cube = R Key", 10, 40, 20, DARKGRAY);
             const char *cubePosText = 0;
-            cubePosText = TextFormat("pos x:%0.0f y:%0.0f z:%0.0f", cubePos.x , cubePos.y, cubePos.z);
+            cubePosText = TextFormat("pos x:%f y:%f z:%f", cubePos.x , cubePos.y, cubePos.z);
             DrawText(cubePosText, 10, 60, 20, DARKGRAY);
 
         EndDrawing();

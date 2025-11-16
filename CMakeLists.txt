@@ -37,7 +37,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(raygui)
 
 
-
 if(EXAMPLE_TESTS)
     FetchContent_Declare(
         SDL2

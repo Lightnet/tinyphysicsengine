@@ -80,10 +80,10 @@
   #define TPE_JOINT_SIZE_MULTIPLIER 1.0f
   #define TPE_JOINT_SIZE(j)    ((j).sizeDivided)
 
-  #define TPE_sin(x)           sinf((x) * 2.0f * M_PI)
-  #define TPE_cos(x)           cosf((x) * 2.0f * M_PI)
-  #define TPE_atan(x)          (atanf(x) * (1.0f / (2.0f * M_PI)))
-  #define TPE_sqrt(x)          sqrtf(x)
+  // #define TPE_sin(x)           sinf((x) * 2.0f * M_PI)
+  // #define TPE_cos(x)           cosf((x) * 2.0f * M_PI)
+  // #define TPE_atan(x)          (atanf(x) * (1.0f / (2.0f * M_PI)))
+  // #define TPE_sqrt(x)          sqrtf(x)
 
   #define TPE_DISTANCE(p1,p2)  TPE_vec3Len(TPE_vec3Minus(p1,p2))
   #define TPE_LENGTH(v)        TPE_vec3Len(v)
@@ -99,10 +99,10 @@
   #define TPE_JOINT_SIZE(joint) ((joint).sizeDivided * TPE_JOINT_SIZE_MULTIPLIER)
 
   // Keep original int functions
-  TPE_Unit TPE_sin(TPE_Unit x);
-  TPE_Unit TPE_cos(TPE_Unit x);
-  TPE_Unit TPE_atan(TPE_Unit x);
-  TPE_Unit TPE_sqrt(TPE_Unit x);
+  // TPE_Unit TPE_sin(TPE_Unit x);
+  // TPE_Unit TPE_cos(TPE_Unit x);
+  // TPE_Unit TPE_atan(TPE_Unit x);
+  // TPE_Unit TPE_sqrt(TPE_Unit x);
 
   #ifndef TPE_APPROXIMATE_LENGTH
     #define TPE_APPROXIMATE_LENGTH 0      /**< whether or not use length/distance 
@@ -253,17 +253,16 @@ static inline TPE_Unit TPE_min(TPE_Unit a, TPE_Unit b);
 static inline TPE_Unit TPE_nonZero(TPE_Unit x);
 static inline TPE_Unit TPE_dist(TPE_Vec3 p1, TPE_Vec3 p2);
 static inline TPE_Unit TPE_distApprox(TPE_Vec3 p1, TPE_Vec3 p2);
-
 //----------------------------------------------------------------------------------------------
-// TPE_Unit TPE_sqrt(TPE_Unit x);
 
 /** Compute sine, TPE_FRACTIONS_PER_UNIT as argument corresponds to 2 * PI
   radians. Returns a number from -TPE_FRACTIONS_PER_UNIT to
   TPE_FRACTIONS_PER_UNIT. */
 
-// TPE_Unit TPE_sin(TPE_Unit x);
-// TPE_Unit TPE_cos(TPE_Unit x);
-// TPE_Unit TPE_atan(TPE_Unit x);
+TPE_Unit TPE_sin(TPE_Unit x);
+TPE_Unit TPE_cos(TPE_Unit x);
+TPE_Unit TPE_atan(TPE_Unit x);
+TPE_Unit TPE_sqrt(TPE_Unit x);
 
 typedef struct
 {
@@ -720,6 +719,9 @@ TPE_Vec3 TPE_vec3(TPE_Unit x, TPE_Unit y, TPE_Unit z)
   return r;
 }
 
+#if TPE_USE_FLOAT
+  TPE_Unit TPE_sqrt(TPE_Unit x) { return sqrtf(x); }
+#else 
 TPE_Unit TPE_sqrt(TPE_Unit x)
 {
   int8_t sign = 1;
@@ -751,23 +753,34 @@ TPE_Unit TPE_sqrt(TPE_Unit x)
 
   return result * sign;
 }
+#endif 
 
-TPE_Unit TPE_vec3Len(TPE_Vec3 v)
-{
-#define ANTI_OVERFLOW 25000
-  if  (v.x < ANTI_OVERFLOW && v.x > -1 * ANTI_OVERFLOW &&
-       v.y < ANTI_OVERFLOW && v.y > -1 * ANTI_OVERFLOW &&
-       v.z < ANTI_OVERFLOW && v.z > -1 * ANTI_OVERFLOW)
+#if TPE_USE_FLOAT
+  TPE_Unit TPE_vec3Len(TPE_Vec3 v)
   {
-    return  TPE_sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    return sqrtf(v.x*v.x + v.y*v.y + v.z*v.z);
   }
-  else
+#else
+  TPE_Unit TPE_vec3Len(TPE_Vec3 v)
   {
-    v.x /= 32; v.y /= 32; v.z /= 32;
-    return  TPE_sqrt(v.x * v.x + v.y * v.y + v.z * v.z) * 32;
+  #define ANTI_OVERFLOW 25000
+    if  (v.x < ANTI_OVERFLOW && v.x > -1 * ANTI_OVERFLOW &&
+        v.y < ANTI_OVERFLOW && v.y > -1 * ANTI_OVERFLOW &&
+        v.z < ANTI_OVERFLOW && v.z > -1 * ANTI_OVERFLOW)
+    {
+      return  TPE_sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    }
+    else
+    {
+      v.x /= 32; v.y /= 32; v.z /= 32;
+      return  TPE_sqrt(v.x * v.x + v.y * v.y + v.z * v.z) * 32;
+    }
+  #undef ANTI_OVERFLOW
   }
-#undef ANTI_OVERFLOW
-}
+#endif 
+
+
+
 
 TPE_Unit TPE_vec3LenApprox(TPE_Vec3 v)
 {
@@ -1506,8 +1519,10 @@ void TPE_bodyApplyGravity(TPE_Body *body, TPE_Unit downwardsAccel)
       (body->flags & TPE_BODY_FLAG_DISABLED))
     return;
 
-  for (uint16_t i = 0; i < body->jointCount; ++i)
+  for (uint16_t i = 0; i < body->jointCount; ++i){
+    printf("y: %f\n", downwardsAccel);
     body->joints[i].velocity[1] -= downwardsAccel;
+  }
 }
 
 void TPE_bodyAccelerate(TPE_Body *body, TPE_Vec3 velocity)
@@ -1553,6 +1568,7 @@ TPE_Unit TPE_vec3Dot(TPE_Vec3 v1, TPE_Vec3 v2)
   return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z) / TPE_F;
 }
 #if TPE_USE_FLOAT
+  TPE_Unit TPE_cos(TPE_Unit x) { return cosf(x * 2.0f * M_PI); }
 #else
   TPE_Unit TPE_cos(TPE_Unit x)  
   {
@@ -1562,6 +1578,7 @@ TPE_Unit TPE_vec3Dot(TPE_Vec3 v1, TPE_Vec3 v2)
 
 
 #if TPE_USE_FLOAT
+  TPE_Unit TPE_sin(TPE_Unit x) { return sinf(x * 2.0f * M_PI); }
 #else
 TPE_Unit TPE_sin(TPE_Unit x)  
 {
@@ -2003,6 +2020,7 @@ TPE_Vec3 TPE_vec3Normalized(TPE_Vec3 v)
 
 
 #if TPE_USE_FLOAT
+  TPE_Unit TPE_atan(TPE_Unit x) { return atanf(x) / (2.0f * M_PI); }
 #else
 TPE_Unit TPE_atan(TPE_Unit x)
 {
